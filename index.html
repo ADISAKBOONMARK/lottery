@@ -4,7 +4,7 @@
     <meta name="screen-orientation" content="portrait">
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0"/>
-    <title>年会抽奖小程序</title>
+    <title>lottery</title>
     <link rel="stylesheet" type="text/css" href="css/reset.css">
     <link rel="stylesheet" type="text/css" href="css/wall.css">
     <style type="text/css">
@@ -25,7 +25,8 @@
         .result span {
             display: inline-block;
             font-size: 25px;
-            width: 150px;
+            width: 500px;
+            /* width: auto; */
             background: #fff;
             line-height: 30px;
             color: #000;
@@ -136,29 +137,48 @@
             text-decoration: none;
             color: white;
         }
+
+        .glow {
+            margin-top: 40px;
+            font-size: 80px;
+            color: #fff;
+            text-align: center;
+            animation: glow 1s ease-in-out infinite alternate;
+        }
+
+        @-webkit-keyframes glow {
+            from {
+                text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
+            }
+            
+            to {
+                text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
+            }
+        }
     </style>
 </head>
 <body>
 <div id="main" class="wall">
+    <h1 class="glow">Drawing Tournament</h1>
     <div class="result-btn">
-       <a href="./result.html" target="_blank">获奖名单</a>
+       <a href="./result.html" target="_blank">View Result</a>
     </div>
 </div>
 <div id="result" class="result">
 </div>
 <div id="tools" class="tools">
-     <button
+     <!-- <button
         v-for="value in btns"
         @click="onClick(value)"
         class="pure-button"
         :class="{ 'button-error': selected == value}"
-       >{{value}}</button>
+       >{{value}}</button> -->
     <button
        class="pure-button"
        @click="toggle"
        :class="{'button-secondary': !running,
-               'button-success': running}">{{running?'停!':'开始'}}</button>
-    <button class="pure-button button-warning" @click="reset">重置</button>
+               'button-success': running}">{{running?'Stop':'Start'}}</button>
+    <button class="pure-button button-warning" @click="reset">Reset</button>
 </div>
 <script type="text/javascript" src="js/zepto.js"></script>
 <script type="text/javascript" src="js/vue.js"></script>
@@ -179,7 +199,8 @@
             member.forEach(function(item, index){
                 item.index = index;
                 var key = getKey(item);
-                var color = choosed[key] ? 'yellow' : 'white';
+                var color = choosed[key] ? 'yellow' : 'yellow';
+                // html.push('<li><a class="glow">'+ item.name + '</a></li>');
                 html.push('<li><a href="#" style="color: ' + color + ';">' + item.name + '</a></li>');
             });
             html.push('</ul>');
@@ -218,10 +239,11 @@
         new Vue({
             el: '#tools',
             data: {
-                selected: 30,
+                selected: 1,
                 running: false,
                 btns: [
-                    30, 10, 5, 2, 1
+                    // 30, 10, 5, 2, 1
+                    1
                 ]
             },
             mounted () {
@@ -235,7 +257,7 @@
             },
             methods: {
                 reset: function(){
-                    if(confirm('确定要重置么？所有之前的抽奖历史将被清除！')){
+                    if(confirm('Do you want to restart the result?')){
                         localStorage.clear();
                         location.reload(true);
                     }
@@ -250,7 +272,7 @@
                         TagCanvas.SetSpeed('myCanvas', speed());
                         var ret = lottery(this.selected);
                         if (ret.length === 0) {
-                            $('#result').css('display', 'block').html('<span>已抽完</span>');
+                            $('#result').css('display', 'block').html('<span>Data not found in the pool.</span>');
                             return
                         }
                         $('#result').css('display', 'block').html('<span>' + ret.join('</span><span>') + '</span>');

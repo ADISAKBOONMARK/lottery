@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <meta name="screen-orientation" content="portrait">
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0"/>
-    <title>年会抽奖小程序</title>
+    <title>lottery</title>
     <link rel="stylesheet" type="text/css" href="css/reset.css">
     <link rel="stylesheet" type="text/css" href="css/wall.css">
     <style type="text/css">
@@ -29,7 +33,7 @@
         }
         .result-list {
             text-align: center;
-            color: #4de7c8;
+            /* color: #4de7c8; */
             font-size: 30px;
             line-height: 50px;
             margin-top: 50px;
@@ -44,14 +48,37 @@
             font-family: '幼圆';
         }
 
+        .glow {
+            margin-top: 40px;
+            font-size: 80px;
+            color: #fff;
+            text-align: center;
+            animation: glow 1s ease-in-out infinite alternate;
+        }
+
+        @-webkit-keyframes glow {
+            from {
+                text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
+            }
+            
+            to {
+                text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
+            }
+        }
+
     </style>
 </head>
 <body>
 <div id="main" class="wall">
-    <div class="result-title">获奖名单</div>
+    <!-- <div class="result-title">All Result</div> -->
+    <h1 class="glow">Drawing Tournament</h1>
     <div class="result-list" v-for="result in results">
         <div v-for="item in result">
-            {{item}}
+            <div class="container">
+            <div class="card">
+                <div class="card-body">{{item}}</div>
+              </div>
+            </div>
         </div>
     </div>
 </div>
@@ -76,7 +103,8 @@
             let results = []
             for(let nameList of str_results) {
                 let temp = JSON.parse(nameList)
-                temp = temp.map(item => {return item.replace('<br/>', ' ')})
+                // temp = temp.map(item => {return item.replace('<br/>', ' ')})
+                temp = temp.map(item => {return item.replace('<br/>', ' : ')})
                 results.push(temp)
             }
             
